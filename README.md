@@ -1,6 +1,5 @@
 # Proxy_get
-通过正则爬取免费的网络代理  
-![mahua](https://github.com/sakuradied/Proxy_get/blob/master/image.png?raw=true)  
+通过正则爬取免费的网络代理    
 本软件由sakuradied开发编写
 ##警告:
     本工具禁止一切形式的商业用途  
