@@ -71,9 +71,9 @@ def get_url_value(url, ip_r, port_r, type_r, value_star, value_end, sleep):
 
 def main():
     urls = input("请输入要爬取的网址:")
-    ip_r = input("请输入IP抓取正则表达式:")
-    port_r = input("请输入端口抓取正则表达式:")
-    type_r = input("请输入代理类型抓取正则表达式:")
+    ip_r = input("请输入IP爬取正则表达式:")
+    port_r = input("请输入端口爬取正则表达式:")
+    type_r = input("请输入代理类型爬取正则表达式:")
     print("输入help查看帮助")
     value_star = ""
     value_end = ""
@@ -97,7 +97,7 @@ def main():
                 help_value  value详细用法
                 sleep       输入每个页面抓取间隔(默认10秒)
                 exit        退出
-                about       输入软件相关信息以及详细说明
+                about       输出软件相关信息以及详细说明
                 """
             )
         elif shell == "export":
