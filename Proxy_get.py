@@ -1,12 +1,13 @@
-#-*- coding=utf-8 -*-
-#/usr/bin/python3
+# -*- coding=utf-8 -*-
+# /usr/bin/python3
 import requests
 from urllib import request, error, parse
 import re
 import time
+import sys
 def about():
     print(
-    r"""
+        r"""
     #####################################################
     #           _  http://sakuradied.com_ _           _ #
     # ___  __ _| | ___   _ _ __ __ _  __| (_) ___  __| |#
@@ -22,12 +23,27 @@ def about():
     当你下载或复制或传输或运行本软件时均视为同意该协议
     """)
 
+def Error(Url,Ip,Port,Type):
+    if Url == '':
+        print("未输入待爬网址,请重新输入")
+        main()
+    elif Ip == '':
+        print("未输入ip正则表达式,请重新输入")
+        main()
+    elif Port == '':
+        print("未输入端口正则表达式,请重新输入")
+        main()
+    elif Type == '':
+        print("未输入类型正则表达式,请重新输入")
+        main()
+
+
 def get_proxy(url, ip_r, port_r, type_r):
     # 通过输入的表达式来获取ip以及端口还有代理类型
-        head = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML,  like Gecko) Chrome/18.0.1025.166  Safari/535.19'
-        }
-#    try:
+    head = {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML,  like Gecko) Chrome/18.0.1025.166  Safari/535.19'
+    }
+    try:
         req = request.Request(url, headers=head)
         response = request.urlopen(req, timeout=12)
         get_hteml = response.read().decode('utf-8')
@@ -40,16 +56,17 @@ def get_proxy(url, ip_r, port_r, type_r):
         typelist = re.findall(str(type_r), str(get_hteml))
         print(typelist)
         # 通过输入正则抓取代理类型
-        file_list = open("proxy_List.txt","a+")
-        #将读取到的数据用标准格式写入到列表
+        file_list = open("proxy_List.txt", "a+")
+        # 将读取到的数据用标准格式写入到列表
         i = 0
         while len(iplist) > i:
-            file_text = str(typelist[i])+r"://"+str(iplist[i])+":"+str(portlist[i])+"\n"
+            file_text = str(typelist[i])+r"://" + \
+                str(iplist[i])+":"+str(portlist[i])+"\n"
             i = i + 1
             file_list.write(str(file_text))
         return(iplist, portlist, typelist)
-#    except Exception as err:
-#        print("error:", err)
+    except Exception as err:
+        return("error:", err)
         # 返回错误信息
 
 
@@ -84,7 +101,7 @@ def main():
             print(
                 r"""
                 #####################################################
-                #           _  http://sakuradied.com_ _           _ #
+                #          _   http://sakuradied.com_ _           _ #
                 # ___  __ _| | ___   _ _ __ __ _  __| (_) ___  __| |#
                 #/ __|/ _` | |/ / | | | '__/ _` |/ _` | |/ _ \/ _` |#
                 #\__ \ (_| |   <| |_| | | | (_| | (_| | |  __/ (_| |#
@@ -101,11 +118,19 @@ def main():
                 """
             )
         elif shell == "export":
+            Error(str(urls), str(ip_r), str(port_r), str(type_r))#如果有一项为空则重启main()函数
             proxylist = get_url_value(str(urls), str(ip_r), str(port_r), str(type_r), str(value_star), str(value_end), sleep)
-            if proxylist != None:
-                print("IPList>", proxylist[0])
-                print("portList>", proxylist[1])
-                print("typelist>", proxylist[2])
+            
+            if proxylist !=None:
+                if "error:" in proxylist:
+                    if "list index out of range" in proxylist:
+                        print("结束:本次未返回数据")
+                    else:
+                        print(proxylist)
+                else:
+                    print("IPList>", proxylist[0])
+                    print("portList>", proxylist[1])
+                    print("typelist>", proxylist[2])
             else:
                 print("结束:本次未返回数据")
 
@@ -126,14 +151,17 @@ def main():
         elif shell == "about":
             about()
         elif shell == "exit":
-            exit()
-main()
+            sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
 
 
 # <td data-title="IP">(.*)</td>
 # <td data-title="PORT">(.*)</td>
 # <td data-title="类型">(.*)</td>
 
-#<td>((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))</td>
-#<td>(6553[0-5]|655[0-2]\\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{1,3}|\d)</td>
-#<td>(SOCKET4|SOCKET5|HTTP|HTTPS)</td>
+# <td>((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))</td>
+# <td>(6553[0-5]|655[0-2]\\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{1,3}|\d)</td>
+# <td>(SOCKET4|SOCKET5|HTTP|HTTPS)</td>
