@@ -23,7 +23,7 @@ def about():
     当你下载或复制或传输或运行本软件时均视为同意该协议
     """)
 
-def Error(Url,Ip,Port,Type):
+def Error(Url,Ip,Port,Type):#判断基本输入是否输入
     if Url == '':
         print("未输入待爬网址,请重新输入")
         main()
@@ -157,6 +157,8 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+#一下为两组正则表达式(第二种基本上就是万金油用法)
 
 # <td data-title="IP">(.*)</td>
 # <td data-title="PORT">(.*)</td>
